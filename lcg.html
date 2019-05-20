@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>PRNG</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-primary">
+
+
+    <div class="container">
+
+        <h1 class="modal-header">Pick random winners</h1>
+
+
+        <label class="page-header">Function parameters:</label>        
+
+        <div class="row">
+            
+            <div class="form-group col-md-2">
+                <label for="multiplier">Multiplier</label>
+                <input class="form-control" type="text" id="multiplier" value="5">
+            </div>
+        
+            <div class="form-group col-md-2">
+                    <label for="startValue">Start value</label>
+                    <input class="form-control" type="text" id="startValue" value="3">
+            </div>
+
+            <div class="form-group col-md-2">
+                <label for="increment">Incrementer</label>
+                <input class="form-control" type="text" id="increment" value="1">
+            </div>
+
+            <div class="form-group col-md-1"> </div>
+        
+            <div class="form-group col-md-2">
+                    <label for="modulus">Number of participants</label>
+                    <input class="form-control" type="text" id="modulus" value="17">
+            </div>
+        
+            <div class="form-group col-md-2">
+                <label for="numbers">Number of winners</label>
+                <input class="form-control" type="text" id="numbers" value="3">
+            </div>
+
+        </div>
+        
+
+        <br>
+        <input class="btn btn-warning" type="button" value="Generate" onclick="generate(document.getElementById('multiplier').value,
+                                                                            document.getElementById('startValue').value,
+                                                                            document.getElementById('increment').value,
+                                                                            document.getElementById('modulus').value,
+                                                                            document.getElementById('numbers').value)">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input class="btn btn-success" type="button" value="Refresh" onClick="window.location.reload()">
+
+
+        <div class="page-header"></div>
+        <br>
+        <h4 id="output1" ></h4> 
+        <br>
+        <h4 id="output2" ></h4> 
+
+    </div>
+
+
+    <script>
+
+        function generate(mul,seed,incr,modulus,N) {
+            
+            let a = parseInt(mul); 
+            let b = parseInt(incr); 
+            let m = parseInt(modulus); 
+
+            let numbers1 = [parseInt(seed)];
+            let numbers2 = [parseInt(seed)];
+            
+            for(let i = 0; i < N; i++){
+                
+                // LCG
+                let xn0 = numbers1[i];
+                let xn1 = ((a * xn0) + b) % m;
+                numbers1.push(xn1);
+
+                //Blum-Blum-Shub
+                xn0 = numbers2[i];
+                xn1 = (xn0 * xn0) % m;
+                numbers2.push(xn1);
+            }
+
+            let list1 = "LCG :  " + numbers1.slice(1, numbers.length).join(', ');            
+            let list2 = "BBS :  " + numbers2.slice(1, numbers.length).join(', ');            
+            document.getElementById("output1").innerHTML=list1;
+            document.getElementById("output2").innerHTML=list2;
+        }
+
+    </script>
+
+</body>
+</html>
